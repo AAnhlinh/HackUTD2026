@@ -1,98 +1,265 @@
-import * as Device from 'expo-device';
-import { Platform, StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { AnimatedIcon } from '@/components/animated-icon';
-import { HintRow } from '@/components/hint-row';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { WebBadge } from '@/components/web-badge';
-import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
+import React from 'react';
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 
-function getDevMenuHint() {
-  if (Platform.OS === 'web') {
-    return <ThemedText type="small">use browser devtools</ThemedText>;
-  }
-  if (Device.isDevice) {
-    return (
-      <ThemedText type="small">
-        shake device or press <ThemedText type="code">m</ThemedText> in terminal
-      </ThemedText>
-    );
-  }
-  const shortcut = Platform.OS === 'android' ? 'cmd+m (or ctrl+m)' : 'cmd+d';
+export default function Dashboard() {
   return (
-    <ThemedText type="small">
-      press <ThemedText type="code">{shortcut}</ThemedText>
-    </ThemedText>
-  );
-}
+    <ScrollView style={styles.container}>
+      <View style={styles.header}>
+        <View>
+          <Text style={styles.greeting}>WELCOME BACK</Text>
+          <Text style={styles.title}>Your Finances</Text>
+        </View>
+        <View style={styles.avatar}>
+          <Text style={styles.avatarText}>JD</Text>
+        </View>
+      </View>
 
-export default function HomeScreen() {
-  return (
-    <ThemedView style={styles.container}>
-      <SafeAreaView style={styles.safeArea}>
-        <ThemedView style={styles.heroSection}>
-          <AnimatedIcon />
-          <ThemedText type="title" style={styles.title}>
-            Welcome to&nbsp;Expo
-          </ThemedText>
-        </ThemedView>
+      <View style={styles.healthCard}>
+        <Text style={styles.cardLabel}>FINANCIAL HEALTH</Text>
+        <Text style={styles.healthScore}>Good</Text>
+        <Text style={styles.mutedText}>
+          You're making progress toward your financial goals.
+        </Text>
+        <View style={styles.progressBackground}>
+          <View style={styles.progressFill} />
+        </View>
+        <Text style={styles.progressText}>72 / 100</Text>
+      </View>
 
-        <ThemedText type="code" style={styles.code}>
-          get started
-        </ThemedText>
+      <Text style={styles.sectionTitle}>Financial Overview</Text>
 
-        <ThemedView type="backgroundElement" style={styles.stepContainer}>
-          <HintRow
-            title="Try editing"
-            hint={<ThemedText type="code">src/app/index.tsx</ThemedText>}
-          />
-          <HintRow title="Dev tools" hint={getDevMenuHint()} />
-          <HintRow
-            title="Fresh start"
-            hint={<ThemedText type="code">npm run reset-project</ThemedText>}
-          />
-        </ThemedView>
+      <View style={styles.summaryGrid}>
+        <View style={styles.summaryCard}>
+          <Text style={styles.cardLabel}>MONTHLY INCOME</Text>
+          <Text style={styles.amount}>$4,500</Text>
+          <Text style={styles.positive}>↑ 4.2% this month</Text>
+        </View>
 
-        {Platform.OS === 'web' && <WebBadge />}
-      </SafeAreaView>
-    </ThemedView>
+        <View style={styles.summaryCard}>
+          <Text style={styles.cardLabel}>MONTHLY SPENDING</Text>
+          <Text style={styles.amount}>$2,850</Text>
+          <Text style={styles.mutedText}>63% of income</Text>
+        </View>
+
+        <View style={styles.summaryCard}>
+          <Text style={styles.cardLabel}>TOTAL DEBT</Text>
+          <Text style={styles.amount}>$18,400</Text>
+          <Text style={styles.mutedText}>Across 3 accounts</Text>
+        </View>
+
+        <View style={styles.summaryCard}>
+          <Text style={styles.cardLabel}>SAVINGS</Text>
+          <Text style={styles.amount}>$6,200</Text>
+          <Text style={styles.positive}>2.1 months of expenses</Text>
+        </View>
+      </View>
+
+      <Text style={styles.sectionTitle}>Monthly Cash Flow</Text>
+
+      <View style={styles.cashFlowCard}>
+        <View style={styles.cashFlowRow}>
+          <Text style={styles.mutedText}>Income</Text>
+          <Text style={styles.positive}>+$4,500</Text>
+        </View>
+        <View style={styles.cashFlowRow}>
+          <Text style={styles.mutedText}>Expenses</Text>
+          <Text style={styles.amountSmall}>-$2,850</Text>
+        </View>
+        <View style={styles.cashFlowRow}>
+          <Text style={styles.mutedText}>Debt payments</Text>
+          <Text style={styles.amountSmall}>-$900</Text>
+        </View>
+        <View style={styles.separator} />
+        <View style={styles.cashFlowRow}>
+          <Text style={styles.balanceLabel}>Remaining</Text>
+          <Text style={styles.balance}>$750</Text>
+        </View>
+      </View>
+
+      <Text style={styles.sectionTitle}>Your Financial Assistant</Text>
+
+      <View style={styles.adviceCard}>
+        <Text style={styles.adviceTag}>PERSONALIZED INSIGHT</Text>
+        <Text style={styles.adviceTitle}>
+          Build your emergency fund
+        </Text>
+        <Text style={styles.mutedText}>
+          Your savings currently cover about 2.1 months
+          of expenses. Consider working toward a
+          three-month emergency fund.
+        </Text>
+      </View>
+
+      <View style={styles.bottomSpace} />
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    backgroundColor: '#0B1220',
+    paddingHorizontal: 20,
+  },
+  header: {
+    marginTop: 55,
+    marginBottom: 25,
     flexDirection: 'row',
-  },
-  safeArea: {
-    flex: 1,
-    paddingHorizontal: Spacing.four,
+    justifyContent: 'space-between',
     alignItems: 'center',
-    gap: Spacing.three,
-    paddingBottom: BottomTabInset + Spacing.three,
-    maxWidth: MaxContentWidth,
   },
-  heroSection: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1,
-    paddingHorizontal: Spacing.four,
-    gap: Spacing.four,
+  greeting: {
+    color: '#8B9BB4',
+    fontSize: 11,
+    letterSpacing: 2,
   },
   title: {
-    textAlign: 'center',
+    color: '#FFFFFF',
+    fontSize: 28,
+    fontWeight: 'bold',
+    marginTop: 5,
   },
-  code: {
-    textTransform: 'uppercase',
+  avatar: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: '#243B53',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  stepContainer: {
-    gap: Spacing.three,
-    alignSelf: 'stretch',
-    paddingHorizontal: Spacing.three,
-    paddingVertical: Spacing.four,
-    borderRadius: Spacing.four,
+  avatarText: {
+    color: '#FFFFFF',
+    fontWeight: 'bold',
+  },
+  healthCard: {
+    backgroundColor: '#17263C',
+    borderRadius: 18,
+    padding: 20,
+    marginBottom: 28,
+  },
+  cardLabel: {
+    color: '#8B9BB4',
+    fontSize: 10,
+    fontWeight: 'bold',
+    letterSpacing: 1,
+    marginBottom: 10,
+  },
+  healthScore: {
+    color: '#4ADE80',
+    fontSize: 30,
+    fontWeight: 'bold',
+    marginBottom: 6,
+  },
+  mutedText: {
+    color: '#9BAAC0',
+    fontSize: 13,
+    lineHeight: 20,
+  },
+  progressBackground: {
+    height: 7,
+    backgroundColor: '#34445A',
+    borderRadius: 10,
+    marginTop: 18,
+  },
+  progressFill: {
+    width: '72%',
+    height: 7,
+    backgroundColor: '#4ADE80',
+    borderRadius: 10,
+  },
+  progressText: {
+    color: '#8B9BB4',
+    fontSize: 11,
+    marginTop: 8,
+    textAlign: 'right',
+  },
+  sectionTitle: {
+    color: '#FFFFFF',
+    fontSize: 19,
+    fontWeight: 'bold',
+    marginBottom: 14,
+  },
+  summaryGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    marginBottom: 28,
+  },
+  summaryCard: {
+    width: '48%',
+    backgroundColor: '#17263C',
+    borderRadius: 15,
+    padding: 15,
+    marginBottom: 12,
+    minHeight: 112,
+  },
+  amount: {
+    color: '#FFFFFF',
+    fontSize: 22,
+    fontWeight: 'bold',
+    marginBottom: 6,
+  },
+  positive: {
+    color: '#4ADE80',
+    fontSize: 12,
+  },
+  cashFlowCard: {
+    backgroundColor: '#17263C',
+    padding: 18,
+    borderRadius: 15,
+    marginBottom: 28,
+  },
+  cashFlowRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginVertical: 7,
+  },
+  amountSmall: {
+    color: '#FFFFFF',
+    fontSize: 14,
+  },
+  separator: {
+    height: 1,
+    backgroundColor: '#34445A',
+    marginVertical: 12,
+  },
+  balanceLabel: {
+    color: '#FFFFFF',
+    fontWeight: 'bold',
+  },
+  balance: {
+    color: '#4ADE80',
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  adviceCard: {
+    backgroundColor: '#1B3540',
+    borderColor: '#28634E',
+    borderWidth: 1,
+    borderRadius: 15,
+    padding: 18,
+    marginBottom: 25,
+  },
+  adviceTag: {
+    color: '#4ADE80',
+    fontSize: 10,
+    fontWeight: 'bold',
+    letterSpacing: 1,
+    marginBottom: 10,
+  },
+  adviceTitle: {
+    color: '#FFFFFF',
+    fontSize: 17,
+    fontWeight: 'bold',
+    marginBottom: 8,
+  },
+  bottomSpace: {
+    height: 30,
   },
 });
